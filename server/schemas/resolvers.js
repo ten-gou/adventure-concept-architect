@@ -21,7 +21,7 @@ const resolvers = {
     },
 
     // all unique categories
-    categories: async () => {
+    uniqueCategories: async () => {
       return (
         Tag.distinct('category')
       )
