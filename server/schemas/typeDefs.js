@@ -1,69 +1,71 @@
 const { gql } = require('apollo-server-express');
 
-
 const typeDefs = gql`
-type User {
-    _id: ID
-    username: String
-    email: String
-    password: String
-    productCount: Int
-    savedProducts: [Product]
-    reviews: [Review]
-  }
-
-type Product {
-    _id: ID
-    title: String
-    authors: String
-    description: String
-    image: String
-    link: String
-    reviews: [Review]
-  }
-
-type Review {
-    _id: ID
-    productIsbn: String
-    productTitle: String
-    reviewTitle: String
-    userId: ID
-    reviewText: String
-    rating: Float
-    recommended: Boolean
-    dateCreated: String
+# establish models here
+type Tag {
+  _id: ID
+  tagTitle: String
+  description: String
+  category: String
 }
 
-type Auth {
-    token: ID!
-    user: User
+type Region {
+  _id: ID
+  regionTitle: String
+  description: String
 }
 
+type Mature {
+  _id: ID
+  matureRating: String
+  description: String
+}
+
+type Genre {
+  _id: ID
+  genreTitle: String
+  description: String
+}
+
+# establish queries here
 type Query {
-    me: User
-    user(username: String!): User
-    users: [User]
-    product(_id: String!): Product
-    products: [Product]
-    reviews: [Review]
-    review(_id: String!): Review
-    reviewsByUser(username: String!): [Review]
-    reviewsByIsbn(productIsbn: String!): [Review]
+  tag(tagTitle: String!): Tag
+  outfitTags(tagTitle: String!): Tag
+  jobTags(tagTitle: String!): Tag
+  demiTags(tagTitle: String!): Tag
+  actTags(tagTitle: String!): Tag
+  statusTags(tagTitle: String!): Tag
+  tags: [Tag]
+
+  genre(genreTitle: String!): Genre
+  genres: [Genre]
+
+  region(regionTitle: String!): Region
+  regions: [Region]
+
+  mature(matureRating: String!): Mature
+  matures: [Mature]
 }
 
+# establish mutations here
 type Mutation {
-     addUser(username: String!, email: String!, password: String!): Auth
-     login(email: String!, password: String!): Auth
-    
-    #  saveProduct(title: String!, image: String!, link: String!, description: String!): User
-    #  removeProduct(productId: ID!): User 
+  createTag(tagTitle: String!, description: String!, category: String!): Tag
+  updateTag(tagTitle: String!): Tag
+  deleteTag(tagTitle: String!): Tag
+  
+  createGenre(genreTitle: String!, description: String!): Genre
+  updateGenre(genreTitle: String!): Genre
+  deleteGenre(genreTitle: String!): Genre
 
-      addReview(productIsbn: String!, productTitle: String!, reviewTitle: String!, reviewText: String!, rating: Float!, recommended: Boolean!) : User
-      updateReview(productId: ID!, reviewId: ID!): User
-      deleteReview(productId: ID!, reviewId: ID!): User
- }
+  createRegion(regionTitle: String!, description: String!): Region
+  updateRegion(regionTitle: String!): Region
+  deleteRegion(regionTitle: String!): Region
+
+  createMature(matureRating: String!, description: String!): Mature
+  updateMature(matureRating: String!): Mature
+  deleteMature(matureRating: String!): Mature
+}
+
 `;
 
-
 module.exports = typeDefs;
-// missing user Id in Reviews

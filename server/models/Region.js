@@ -11,4 +11,8 @@ const regionSchema = new Schema(
             maxLength: 280
         }
     }
-)
+);
+
+const Region = model('Region', regionSchema);
+
+module.exports = Region;
