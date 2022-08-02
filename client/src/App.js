@@ -3,7 +3,10 @@ import React from 'react';
 import { ApolloProvider, ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import Home from './pages/Home';
+//import Doujin from './pages/Doujin';
+//import VN from './pages/VN';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -32,6 +35,8 @@ function App() {
         <>
           <Routes>
             <Route exact path='/' element={<Home />}></Route>
+            {/*<Route exact path='/doujin' element={<Doujin />}></Route> */}
+            {/*<Route exact path='/visualnovel' element={<VN />}></Route> */}
           </Routes>
         </>
       </BrowserRouter>
