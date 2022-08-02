@@ -8,10 +8,12 @@ const tagSchema = new Schema(
         },
         description: {
             type: String,
+            default: 'None written',
             maxLength: 280
         },
         category: {
             type: String
+            // category being outfit, job, demi, act, status, etc
         }
     }
 );

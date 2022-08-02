@@ -30,11 +30,8 @@ type Genre {
 # establish queries here
 type Query {
   tag(tagTitle: String!): Tag
-  outfitTags(tagTitle: String!): Tag
-  jobTags(tagTitle: String!): Tag
-  demiTags(tagTitle: String!): Tag
-  actTags(tagTitle: String!): Tag
-  statusTags(tagTitle: String!): Tag
+  tagsByCategory(category: String!): Tag
+  uniqueCategories: [Tag]
   tags: [Tag]
 
   genre(genreTitle: String!): Genre
@@ -49,20 +46,20 @@ type Query {
 
 # establish mutations here
 type Mutation {
-  createTag(tagTitle: String!, description: String!, category: String!): Tag
-  updateTag(tagTitle: String!): Tag
+  createTag(tagTitle: String!, category: String!): Tag
+  updateTag(_id: ID!, tagTitle: String!): Tag
   deleteTag(tagTitle: String!): Tag
   
-  createGenre(genreTitle: String!, description: String!): Genre
-  updateGenre(genreTitle: String!): Genre
+  createGenre(genreTitle: String!,): Genre
+  updateGenre(_id: ID!, genreTitle: String!): Genre
   deleteGenre(genreTitle: String!): Genre
 
-  createRegion(regionTitle: String!, description: String!): Region
-  updateRegion(regionTitle: String!): Region
+  createRegion(regionTitle: String!,): Region
+  updateRegion(_id: ID!, regionTitle: String!): Region
   deleteRegion(regionTitle: String!): Region
 
-  createMature(matureRating: String!, description: String!): Mature
-  updateMature(matureRating: String!): Mature
+  createMature(matureRating: String!,): Mature
+  updateMature(_id: ID!, matureRating: String!): Mature
   deleteMature(matureRating: String!): Mature
 }
 
