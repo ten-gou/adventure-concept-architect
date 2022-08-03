@@ -98,6 +98,14 @@ const resolvers = {
     },
 
     // delete a tag
+    deleteTag: async (parent, args) => {
+      const deleteTag = await Tag.findOneAndUpdate(
+        {tagTitle: args.tagTitle},
+        {$pull: {tagTitle: args.tagTitle}}
+      )
+
+      return deleteTag;
+    },
 
     // create a genre
     createGenre: async (parent, args) => {
@@ -118,6 +126,14 @@ const resolvers = {
     },
 
     // delete a genre
+    deleteGenre: async (parent, args) => {
+      const deleteGenre = await Genre.findOneAndUpdate(
+        {genreTitle: args.genreTitle},
+        {$pull: {genreTitle: args.genreTitle}}
+      )
+
+      return deleteGenre;
+    },
 
     // create a region
     createRegion: async (parent, args) => {
@@ -138,6 +154,14 @@ const resolvers = {
     },
 
     // delete a region
+    deleteRegion: async (parent, args) => {
+      const deleteRegion = await Region.findOneAndUpdate(
+        {regionTitle: args.regionTitle},
+        {$pull: {regionTitle: args.regionTitle}}
+      )
+
+      return deleteRegion;
+    },
 
     // create a mature
     createMature: async (parent, args) => {
@@ -158,6 +182,14 @@ const resolvers = {
     },
 
     // delete a mature
+    deleteMature: async (parent, args) => {
+      const deleteMature = await Mature.findOneAndUpdate(
+        {matureRating: args.matureRating},
+        {$pull: {matureRating: args.matureRating}}
+      )
+
+      return deleteMature;
+    }
 
   }
   
