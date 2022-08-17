@@ -2,6 +2,7 @@ const Tag = require('../models/Tag');
 const Genre = require('../models/Genre');
 const Region = require('../models/Region');
 const Mature = require('../models/Mature');
+const db = require('../config/connection');
 
 const resolvers = {
   // read data
@@ -15,16 +16,25 @@ const resolvers = {
 
     // all tags by category
     tagsByCategory: async (parent, { category }) => {
-      return (
-        Tag.find({ category })
+      const params = category ? {category} : {};
+      return(
+        Tag.find(params)
       )
     },
 
     // all unique categories
     uniqueCategories: async () => {
-      return (
-        Tag.distinct('category')
-      )
+      return (Tag.distinct("category").then(data => {
+        const arr = [];
+
+        for (i=0; i<data.length; i++) {
+          const sCStr = `{"category":"${data[i]}"}`;
+          const sCArr = JSON.parse(sCStr);
+          arr.push(sCArr);
+        }
+
+        return arr;
+      }).then(arr => {return arr}))
     },
 
     // all tags
@@ -69,6 +79,13 @@ const resolvers = {
       )
     },
 
+    lewdOrNonLewd: async (parent, { lewd }) => {
+      const params = lewd ? { lewd } : {};
+      return(
+        Mature.find({ lewd })
+      )
+    },
+
     // all mature
     matures: async () => {
       return (
@@ -90,21 +107,25 @@ const resolvers = {
     updateTag: async (parent, args) => {
       const updateTag = await Tag.findByIdAndUpdate(
         {_id: args._id},
-        {$push: {tagTitle: args.tagTitle}},
+        {
+          tagTitle: args.tagTitle,
+          category: args.category,
+          description: args.description
+        },
         {new: true}
-      )
+      ).exec()
+      
 
-      return updateTag;
+      return { updateTag };
     },
 
     // delete a tag
     deleteTag: async (parent, args) => {
-      const deleteTag = await Tag.findOneAndUpdate(
-        {tagTitle: args.tagTitle},
-        {$pull: {tagTitle: args.tagTitle}}
-      )
+      const deleteTag = await Tag.findOneAndDelete(
+        {tagTitle: args.tagTitle}
+      ).exec()
 
-      return deleteTag;
+      return { deleteTag };
     },
 
     // create a genre
@@ -118,21 +139,23 @@ const resolvers = {
     updateGenre: async (parent, args) => {
       const updateGenre = await Genre.findByIdAndUpdate(
         {_id: args._id},
-        {$push: {genreTitle: args.genreTitle}},
+        {
+          genreTitle: args.genreTitle,
+          description: args.description
+        },
         {new: true}
-      )
+      ).exec()
 
-      return updateGenre;
+      return { updateGenre };
     },
 
     // delete a genre
     deleteGenre: async (parent, args) => {
-      const deleteGenre = await Genre.findOneAndUpdate(
-        {genreTitle: args.genreTitle},
-        {$pull: {genreTitle: args.genreTitle}}
-      )
+      const deleteGenre = await Genre.findOneAndDelete(
+        {genreTitle: args.genreTitle}
+      ).exec()
 
-      return deleteGenre;
+      return { deleteGenre };
     },
 
     // create a region
@@ -146,21 +169,23 @@ const resolvers = {
     updateRegion: async (parent, args) => {
       const updateRegion = await Region.findByIdAndUpdate(
         {_id: args._id},
-        {$push: {regionTitle: args.regionTitle}},
+        {
+          regionTitle: args.regionTitle,
+          description: args.description
+        },
         {new: true}
-      )
+      ).exec()
 
       return updateRegion;
     },
 
     // delete a region
     deleteRegion: async (parent, args) => {
-      const deleteRegion = await Region.findOneAndUpdate(
+      const deleteRegion = await Region.findOneAndDelete(
         {regionTitle: args.regionTitle},
-        {$pull: {regionTitle: args.regionTitle}}
-      )
+      ).exec()
 
-      return deleteRegion;
+      return { deleteRegion };
     },
 
     // create a mature
@@ -174,19 +199,22 @@ const resolvers = {
     updateMature: async (parent, args) => {
       const updateMature = await Mature.findByIdAndUpdate(
         {_id: args._id},
-        {$push: {matureRating: args.matureRating}},
+        {
+          matureRating: args.matureRating,
+          lewd: args.lewd,
+          description: args.description
+        },
         {new: true}
-      )
+      ).exec()
 
       return updateMature;
     },
 
     // delete a mature
     deleteMature: async (parent, args) => {
-      const deleteMature = await Mature.findOneAndUpdate(
-        {matureRating: args.matureRating},
-        {$pull: {matureRating: args.matureRating}}
-      )
+      const deleteMature = await Mature.findOneAndDelete(
+        {matureRating: args.matureRating}
+      ).exec()
 
       return deleteMature;
     }

@@ -1,26 +1,34 @@
 [
     {
-        "matureRating": "All Ages"
+        "matureRating": "All Ages",
+        "lewd": false
     },
     {
-        "matureRating": "Shonen Ai"
+        "matureRating": "Shonen Ai",
+        "lewd": false
     },
     {
-        "matureRating": "Shoujo Ai"
+        "matureRating": "Shoujo Ai",
+        "lewd": false
     },
     {
-        "matureRating": "Nakige"
+        "matureRating": "Nakige",
+        "lewd": false
     },
     {
-        "matureRating": "Galge"
+        "matureRating": "Galge",
+        "lewd": true
     },
     {
-        "matureRating": "Otomege"
+        "matureRating": "Otomege",
+        "lewd": true
     },
     {
-        "matureRating": "Eroge"
+        "matureRating": "Eroge",
+        "lewd": true
     },
     {
-        "matureRating": "Nukige"
+        "matureRating": "Nukige",
+        "lewd": true
     }
 ]
