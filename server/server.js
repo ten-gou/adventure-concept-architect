@@ -23,7 +23,7 @@ const startServer = async () => {
   console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
 };
 
-startServer()
+startServer();
 // 
 
 

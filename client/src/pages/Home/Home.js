@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery } from '@apollo/client';
+import { QUERY_MATURES, QUERY_TAGS } from '../../utils/queries';
 
 import {
     CssBaseline,
     Box,
-    Grid,
-    Stack
 } from '@mui/material';
 import { styled  } from '@mui/material/styles';
 
@@ -15,10 +15,18 @@ const BoxBackground = styled(Box)(({ theme }) => ({
 }));
 
 const Home = () => {
+    const { loading, error, data } = useQuery(QUERY_TAGS);
+    console.log(loading);
+    console.log(data);
+
+    if (error) {
+        console.log(error);
+    }
+
     return (
         <BoxBackground>
         <CssBaseline />
-        <text>hello again!</text>
+        hello again!
         </BoxBackground>
     );
 }

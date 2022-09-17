@@ -30,7 +30,6 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <text>Welcome to the hentai prompt generator!</text>
       <BrowserRouter>
         <>
           <Routes>
