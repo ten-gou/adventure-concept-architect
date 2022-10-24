@@ -1,0 +1,34 @@
+[
+    {
+        "matureRating": "All Ages",
+        "lewd": false
+    },
+    {
+        "matureRating": "Shonen Ai",
+        "lewd": false
+    },
+    {
+        "matureRating": "Shoujo Ai",
+        "lewd": false
+    },
+    {
+        "matureRating": "Nakige",
+        "lewd": false
+    },
+    {
+        "matureRating": "Galge",
+        "lewd": true
+    },
+    {
+        "matureRating": "Otomege",
+        "lewd": true
+    },
+    {
+        "matureRating": "Eroge",
+        "lewd": true
+    },
+    {
+        "matureRating": "Nukige",
+        "lewd": true
+    }
+]

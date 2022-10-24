@@ -8,6 +8,7 @@ const genreSchema = new Schema(
         },
         description: {
             type: String,
+            default: 'None written',
             maxLength: 280
         }
     }

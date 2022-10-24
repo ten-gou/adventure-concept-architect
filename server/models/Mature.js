@@ -6,8 +6,13 @@ const matureSchema = new Schema(
             type: String,
             required: true
         },
+        lewd: {
+            type: Boolean,
+            default: true
+        },
         description: {
             type: String,
+            default: 'None written',
             maxLength: 280
         }
     }

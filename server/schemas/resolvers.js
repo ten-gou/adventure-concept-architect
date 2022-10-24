@@ -1,186 +1,226 @@
-const { AuthenticationError } = require("apollo-server-express");
-// const  User = require("../models/User");
-// const  Product = require("../models/Product");
-// const  Review = require("../models/Review");
-
-const { signToken } = require("../utils/auth");
+const Tag = require('../models/Tag');
+const Genre = require('../models/Genre');
+const Region = require('../models/Region');
+const Mature = require('../models/Mature');
+const db = require('../config/connection');
 
 const resolvers = {
+  // read data
   Query: {
-    // Me
-    me: async (parent, args, context) => {
-      if (context.user) {
-        const userData = await User.findOne({ _id: context.user._id })
-          .select("-__v -password")
-          .populate ("reviews");
-
-        return userData;
-      }
-
-      throw new AuthenticationError("Not logged in");
-    },
-    //   User
-    user: async (parent, { username }) => {
+    // single tag
+    tag: async (parent, { tagTitle }) => {
       return (
-        User.findOne({ username })
-          .select("-__v -password")
-          .populate("reviews")
-          // // Saved Products
-          // .populate("savedProducts")
-      );
-    },
-    users: async () => {
-        return (
-          User.find()
-            .select("-__v -password")
-            .populate("reviews")
-            // Saved Products
-            .populate("savedProducts")
-        );
+        Tag.findOne({ tagTitle })
+      )
     },
 
-    // Product Reviews
-    reviews: async (parent, { username, productIsbn }) => {
-      
-      const params = username ? { username, productIsbn } : {};
-      return Review.find(params).sort({ createdAt: -1 });
-    },
-    reviewsByUser: async (parent,  { username }) => {
-      const params = username ? { username } : {};
-      return User.find(params).sort({ createdAt: -1 })
-      // .populate(reviews);
+    // all tags by category
+    tagsByCategory: async (parent, { category }) => {
+      const params = category ? {category} : {};
+      return(
+        Tag.find(params)
+      )
     },
 
-    reviewsByIsbn: async (parent,  { productIsbn }) => {
-      const params = productIsbn ? { productIsbn } : {};
-      const results = await Review.find(params).sort({ dateCreated: -1 }); 
+    // all unique categories
+    uniqueCategories: async () => {
+      return (Tag.distinct("category").then(data => {
+        const arr = [];
 
-      return results; 
+        for (i=0; i<data.length; i++) {
+          const sCStr = `{"category":"${data[i]}"}`;
+          const sCArr = JSON.parse(sCStr);
+          arr.push(sCArr);
+        }
+
+        return arr;
+      }).then(arr => {return arr}))
+    },
+
+    // all tags
+    tags: async () => {
+      return (
+        Tag.find()
+      )
+    },
+
+    // single genre
+    genre: async (parent, { genreTitle }) => {
+      return (
+        Genre.findOne({ genreTitle })
+      )
+    },
+
+    // all genres
+    genres: async () => {
+      return (
+        Genre.find()
+      )
+    },
+
+    // single region
+    region: async (parent, { regionTitle }) => {
+      return (
+        Region.findOne({ regionTitle })
+      )
+    },
+
+    // all regions
+    regions: async () => {
+      return (
+        Region.find()
+      )
+    },
+
+    // single mature
+    mature: async (parent, { matureRating }) => {
+      return (
+        Mature.findOne({ matureRating })
+      )
+    },
+
+    lewdOrNonLewd: async (parent, { lewd }) => {
+      const params = lewd ? { lewd } : {};
+      return(
+        Mature.find({ lewd })
+      )
+    },
+
+    // all mature
+    matures: async () => {
+      return (
+        Mature.find()
+      )
     }
   },
 
+  // create, update, or delete data
   Mutation: {
-    // Add User
-    addUser: async (parent, args) => {
-      const user = await User.create(args);
-      const token = signToken(user);
+    // create a tag
+    createTag: async (parent, args) => {
+      const tag = await Tag.create(args);
 
-      return { token, user };
+      return { tag };
     },
-    // login
-    login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
 
-      if (!user) {
-        throw new AuthenticationError("Incorrect credentials");
-      }
+    // update a tag
+    updateTag: async (parent, args) => {
+      const updateTag = await Tag.findByIdAndUpdate(
+        {_id: args._id},
+        {
+          tagTitle: args.tagTitle,
+          category: args.category,
+          description: args.description
+        },
+        {new: true}
+      ).exec()
+      
 
-      const correctPw = await user.isCorrectPassword(password);
-
-      if (!correctPw) {
-        throw new AuthenticationError("Incorrect credentials");
-      }
-
-      const token = signToken(user);
-      return { token, user };
+      return { updateTag };
     },
-    // saveProduct: async (parent, args, context) => {
-    //   if (context.user) {
-    //     const product = await Product.create({ ...args, username: context.user.username });
-    //     console.log(product);
-        
-    //     const updatedUser = await User.findByIdAndUpdate(
-    //       { _id: context.user._id },
-    //       { $push: { savedProducts: product  } },
-    //       { new: true }
-    //     );
-    //       console.log(updatedUser)
-    //      return updatedUser;
-    //     return product;
-    //   }
-    //   throw new AuthenticationError("You need to be logged in!");
-    // },
-    // removeProduct: async (parent, { productId }, context) => {
-    //   if (context.user) {
-        
-    //     const updateUser = await User.findByIdAndUpdate(
-    //       { _id: context.user._id },
-    //       { $pull: { savedProducts: productId } },
-    //       { new: true }
-    //     );
-    //     const removedProduct = await Product.findByIdAndRemove(productId)
-    //     console.log(removedProduct)
-    //     return updateUser;
-    //   }
-    //   throw new AuthenticationError("You need to be logged in!");
-    // },
-    //   Create a Review
-    addReview: async(parent, args, context) => {
-        if(context.user) {
-          // Create Review
-          const { productIsbn, productTitle, reviewTitle, reviewText, rating, recommended } = args;
-          console.log(recommended, "recommended");
-          const review = await Review.create({productIsbn, productTitle, reviewTitle, reviewText, rating, recommended, username: context.user.username})
-          console.log(review)
-          // Add Review to USEr
-          const updatedUser = await User.findByIdAndUpdate(
-            { _id: context.user._id },
-            { $push: { reviews: review  } },
-            { new: true }
-          );
-//           dateCreated: null
-// productIsbn: null
-// recommend: null
-// reviewText: null
-// reviewTitle: null
-// userId: null
-          console.log(updatedUser)
-          // Add Review to Product
-          // const updateProduct = await Product.findByIdAndUpdate(
-          //   //API ID 
-          //   { _id: isbn },
-          //   { $push: { reviews: review } },
-          //   { new: true }
-          //    );
-          // console.log(updateProduct)
-          return updatedUser;
-       }
-       throw new AuthenticationError('You need to be logged in!');
+
+    // delete a tag
+    deleteTag: async (parent, args) => {
+      const deleteTag = await Tag.findOneAndDelete(
+        {tagTitle: args.tagTitle}
+      ).exec()
+
+      return { deleteTag };
     },
-    //  Update a Review
-    updateReview: async (parent, args, context) =>{
-        if(context.review) {
-              
-            const updateReview = await Review.findByIdAndUpdate(
-                 { _id: context.review._id },
-                 { $push: { reviewText: review._id } },
-                 { new: true }
-               );
-       
-               return updateUser;
-         }
-         throw new AuthenticationError('You need to be logged in!');
+
+    // create a genre
+    createGenre: async (parent, args) => {
+      const genre = await Genre.create(args);
+
+      return { genre };
     },
-    //  Remove a Review
-    deleteReview: async(parent, args, context) => {
-        if(context.user) {
-          //  Delete Review from User
-          // Delete review from rpoduct
-              // Delete Review from review
-          // const updateProduct = await Product.findByIdAndUpdate(
-          //      { _id: context.user._id },
-          //      { $pull: { reviews: review._id } },
-          //      { new: true }
-          //    );
-     
-             return updateUser;
-       }
-       throw new AuthenticationError('You need to be logged in!');
+
+    // update a genre
+    updateGenre: async (parent, args) => {
+      const updateGenre = await Genre.findByIdAndUpdate(
+        {_id: args._id},
+        {
+          genreTitle: args.genreTitle,
+          description: args.description
+        },
+        {new: true}
+      ).exec()
+
+      return { updateGenre };
+    },
+
+    // delete a genre
+    deleteGenre: async (parent, args) => {
+      const deleteGenre = await Genre.findOneAndDelete(
+        {genreTitle: args.genreTitle}
+      ).exec()
+
+      return { deleteGenre };
+    },
+
+    // create a region
+    createRegion: async (parent, args) => {
+      const region = await Region.create(args);
+
+      return { region };
+    },
+
+    // update a region
+    updateRegion: async (parent, args) => {
+      const updateRegion = await Region.findByIdAndUpdate(
+        {_id: args._id},
+        {
+          regionTitle: args.regionTitle,
+          description: args.description
+        },
+        {new: true}
+      ).exec()
+
+      return updateRegion;
+    },
+
+    // delete a region
+    deleteRegion: async (parent, args) => {
+      const deleteRegion = await Region.findOneAndDelete(
+        {regionTitle: args.regionTitle},
+      ).exec()
+
+      return { deleteRegion };
+    },
+
+    // create a mature
+    createMature: async (parent, args) => {
+      const mature = await Mature.create(args);
+
+      return { mature };
+    },
+
+    // update a mature
+    updateMature: async (parent, args) => {
+      const updateMature = await Mature.findByIdAndUpdate(
+        {_id: args._id},
+        {
+          matureRating: args.matureRating,
+          lewd: args.lewd,
+          description: args.description
+        },
+        {new: true}
+      ).exec()
+
+      return updateMature;
+    },
+
+    // delete a mature
+    deleteMature: async (parent, args) => {
+      const deleteMature = await Mature.findOneAndDelete(
+        {matureRating: args.matureRating}
+      ).exec()
+
+      return deleteMature;
     }
-  },
+
+  }
+  
 };
    
-  
-
-  
 module.exports = resolvers;
