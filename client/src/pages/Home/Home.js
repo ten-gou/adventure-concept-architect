@@ -1,49 +1,27 @@
 import React from 'react';
-import { useQuery } from '@apollo/client';
-import { QUERY_TAGS } from '../../utils/queries';
 
 import {
     Box,
+    Paper,
     Grid,
+    Typography,
 } from '@mui/material';
 
 const Home = () => {
-    const { loading, error, data } = useQuery(QUERY_TAGS);
 
-    if (error) {
-        console.log(error);
-    }
+    return (
+        <Box>
+            <Grid container
+            height={'75vh'}
+            spacing={4}
+            justifyContent={'center'}
+            alignContent={'center'}>
+                <Grid item xs={10} sm={12} align={'center'}><Typography variant={'h5'}>Welcome to the Prompt Generator!</Typography></Grid>
+                <Grid item xs={6} sm={12} align={'center'}><Typography variant={'p'}>Feeling bored? Want to get an 'idea' or template to start off from? Well look no further, the prompt generator for all your needs is here! Simply choose what kind of work you are looking to make, and the prompt generator will select tags and settings for you to work with!</Typography></Grid>
+            </Grid>
+        </Box>
+    );
 
-    if (loading === false) {
-        return (
-            <Box>
-                <Grid
-                marginX={2}
-                textAlign='center'>
-                    Welcome to the Prompt Generator!
-                </Grid>
-    
-                <Grid>
-                    {data.tags[35].tagTitle}
-                </Grid>
-            </Box>
-        );
-    }
-    else {
-        return (
-            <Box>
-                <Grid
-                marginX={2}
-                textAlign='center'>
-                    Welcome to the Prompt Generator!
-                </Grid>
-    
-                <Grid>
-    
-                </Grid>
-            </Box>
-        );
-    }    
 }
 
 export default Home;
