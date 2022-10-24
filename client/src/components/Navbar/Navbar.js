@@ -35,7 +35,7 @@ const Navbar = () => {
     const Doujinshi = () => {
         const match = useMediaQuery(theme.breakpoints.up('sm'));
         if (match === true) {
-            return <Button href='/'>Doujinshi</Button>
+            return <Button href='/doujin'>Doujinshi</Button>
         }
         else {
             return <Button href='/'>Doujin</Button>

@@ -8,7 +8,7 @@ import { createTheme, ThemeProvider, styled, CssBaseline } from '@mui/material';
 import Navbar from './components/Navbar';
 
 import Home from './pages/Home';
-//import Doujin from './pages/Doujin';
+import Doujin from './pages/Doujin';
 //import VN from './pages/VN';
 
 const httpLink = createHttpLink({
@@ -74,7 +74,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route exact path='/' element={<Home />}></Route>
-            {/*<Route exact path='/doujin' element={<Doujin />}></Route> */}
+            <Route exact path='/doujin' element={<Doujin />}></Route>
             {/*<Route exact path='/visualnovel' element={<VN />}></Route> */}
           </Routes>
           </ThemeProvider>
