@@ -10,7 +10,7 @@ query {
 }`;
 
 export const QUERY_TAG = gql `
-query Tag($tagTitle: String!) {
+query Tag( $tagTitle: String! ) {
   tag(tagTitle: $tagTitle) {
     _id
     tagTitle
