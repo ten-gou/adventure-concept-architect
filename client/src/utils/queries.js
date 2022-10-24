@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const QUERY_TAGS = gql `
-query {
+query Tags {
   tags {
     tagTitle
     description
@@ -25,5 +25,13 @@ query Matures {
     _id
     matureRating
     lewd
+  }
+}`
+
+export const QUERY_REGIONS = gql `
+query Regions {
+  regions {
+    regionTitle
+    description
   }
 }`;

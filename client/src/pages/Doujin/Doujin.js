@@ -5,13 +5,13 @@ import {
     Grid,
     Typography,
 } from '@mui/material';
-import { QUERY_MATURES, QUERY_TAGS } from '../../utils/queries';
+import { QUERY_REGIONS, QUERY_TAGS } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
 
 const QueryMultiple = () => {
     const queryTags = useQuery(QUERY_TAGS);
-    const queryMatures = useQuery(QUERY_MATURES);
-    return [queryTags, queryMatures];
+    const queryRegions = useQuery(QUERY_REGIONS);
+    return [queryTags, queryRegions];
 }
 
 const Doujin = () => {   
