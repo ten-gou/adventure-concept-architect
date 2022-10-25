@@ -38,7 +38,7 @@ const Navbar = () => {
             return <Button href='/doujin'>Doujinshi</Button>
         }
         else {
-            return <Button href='/'>Doujin</Button>
+            return <Button href='/doujin'>Doujin</Button>
         }
     }
 
