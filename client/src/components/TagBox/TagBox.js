@@ -18,11 +18,14 @@ const TagBox = (props) => {
         setChecked((prev) => !prev);
     };
 
+    console.log(props)
+
     if (props !== undefined) {
         return (
             <Grid container
             spacing={12}>
                 {props.data.map((item, index) => {
+                    console.log(item)
                     return (
                         <Grid item
                         xs={6} sm={4} md={2}
@@ -35,7 +38,7 @@ const TagBox = (props) => {
                             onClick={handleChange}
                             checked={checked}>
                                 <CardContent>
-                                <Typography variant='p'>{item.tagTitle}</Typography>
+                                <Typography variant='p'>{item.value}</Typography>
                                 <Collapse in={checked}>
                                     <Typography variant='p'>{item.description}</Typography>
                                 </Collapse>

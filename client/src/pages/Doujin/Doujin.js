@@ -7,15 +7,14 @@ import {
     Stack,
     Button
 } from '@mui/material';
-import { QUERY_REGIONS, QUERY_TAGS } from '../../utils/queries';
+import { QUERY_TAGS } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
-import { getRandomInt } from '../../utils/random';
+import { getRandomInt, randomValue } from '../../utils/random';
 import TagBox from '../../components/TagBox';
 
 const QueryMultiple = () => {
     const queryTags = useQuery(QUERY_TAGS);
-    const queryRegions = useQuery(QUERY_REGIONS);
-    return [queryTags, queryRegions];
+    return [queryTags];
 }
 
 const Doujin = () => {
@@ -25,8 +24,9 @@ const Doujin = () => {
     
     const [
         {loading: loading1, data: data1},
-        {loading: loading2, data: data2},
     ] = QueryMultiple();
+
+    console.log(data1)
 
     //generates the tagList
     const generateTags = () => {
@@ -34,10 +34,10 @@ const Doujin = () => {
         tagList = [];
 
         //pulls a random amt of tags to input
-        const randomAmt = getRandomInt(10);
-        for (let i = 0; i < randomAmt; i++) {
-            const randomTag = getRandomInt(data1.tags.length, 0);
-            tagList.push(data1.tags[randomTag]);
+        const randAmt = getRandomInt(14);
+        for (let i = 0; i < randAmt; i++) {
+            const randomTag = randomValue(data1.tags, `tagTitle`);
+            tagList.push(randomTag);
         };
         
         return tagList;
@@ -56,7 +56,7 @@ const Doujin = () => {
         removeDups(tagList);
     };
 
-    if (loading1 === false && loading2 === false) {   
+    if (loading1 === false) {   
         return (
             <Box>
                 <Grid container

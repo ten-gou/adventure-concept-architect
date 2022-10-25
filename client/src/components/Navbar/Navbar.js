@@ -25,10 +25,10 @@ const Navbar = () => {
     const VisualNovel = () => {
         const match = useMediaQuery(theme.breakpoints.up('sm'));
         if (match === true) {
-            return <Button href='/'>Visual Novel</Button>
+            return <Button href='/visualnovel'>Visual Novel</Button>
         }
         else {
-            return <Button href='/'>VN</Button>
+            return <Button href='/visualnovel'>VN</Button>
         }
     }
 

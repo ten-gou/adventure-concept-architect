@@ -31,7 +31,17 @@ query Matures {
 export const QUERY_REGIONS = gql `
 query Regions {
   regions {
+    _id
     regionTitle
     description
   }
 }`;
+
+export const Query_GENRES = gql `
+query Genres {
+  genres {
+    _id
+    genreTitle
+    description
+  }
+}`
