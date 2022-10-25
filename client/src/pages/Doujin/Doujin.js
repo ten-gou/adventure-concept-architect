@@ -60,7 +60,8 @@ const Doujin = () => {
         return (
             <Box>
                 <Grid container
-                marginY={4}
+                marginY={8}
+                spacing={4}
                 height={'30vh'}
                 alignContent={'center'}>
                     <Grid item xs={12}>

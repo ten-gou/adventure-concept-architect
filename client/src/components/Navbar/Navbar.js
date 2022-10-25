@@ -53,9 +53,7 @@ const Navbar = () => {
     marginBottom={2}>
         <Button href='/'><Typography variant='h2'>Prompt Generator</Typography></Button>
 
-        <FormControlLabel control={<MenuIcon checked={checked} onClick={handleChange} />}>
-            <MenuIcon />
-        </FormControlLabel>
+        <FormControlLabel control={<MenuIcon checked={checked} onClick={handleChange} />} />
     </Stack>
     <Collapse
     in={checked}>
