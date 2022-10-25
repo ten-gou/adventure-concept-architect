@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { Query_GENRES, QUERY_MATURES, QUERY_REGIONS, QUERY_TAGS } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
-import { getRandomInt, randomValue } from '../../utils/random';
+import { getRandomInt, randomValue, removeDups } from '../../utils/random';
 import TagBox from '../../components/TagBox';
 
 const QueryMultiple = () => {
@@ -31,27 +31,34 @@ const VN = () => {
 
     const [state, setState] = useState(vnList);
 
-
-
     const generateVN = () => {
         //clears the prev information
         vnList = [];
+        let tagList = [];
 
         //random genre
         const randGenre = randomValue(data4.genres, `genreTitle`);
-        console.log(randGenre);
+        vnList.push({'genre':randGenre});
 
         //random mature rating
         const randMature = randomValue(data3.matures, 'matureRating');
-        console.log(randMature);
+        vnList.push({'mature':randMature});
 
         //random region
         const randRegion = randomValue(data2.regions, `regionTitle`);
-        console.log(randRegion);
+        vnList.push({'region':randRegion});
 
         //random tags
-        const randTags = randomValue(data2.regions, `regionTitle`);
+        const randAmt = getRandomInt(12);
+        for (let i = 0; i < randAmt; i++) {
+            const randTags = randomValue(data1.tags, `tagTitle`);
+            tagList.push(randTags);
+        }
+        removeDups(tagList);
 
+        vnList.push({'tags':tagList});
+
+        console.log(vnList);
     }
 
     return (

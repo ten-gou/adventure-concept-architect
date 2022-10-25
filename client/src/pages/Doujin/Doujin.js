@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { QUERY_TAGS } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
-import { getRandomInt, randomValue } from '../../utils/random';
+import { getRandomInt, randomValue, removeDups } from '../../utils/random';
 import TagBox from '../../components/TagBox';
 
 const QueryMultiple = () => {
@@ -19,14 +19,11 @@ const QueryMultiple = () => {
 
 const Doujin = () => {
     let tagList = [];
-    let newList = [];
     const [state, setState] = useState(tagList)
     
     const [
         {loading: loading1, data: data1},
     ] = QueryMultiple();
-
-    console.log(data1)
 
     //generates the tagList
     const generateTags = () => {
@@ -34,7 +31,7 @@ const Doujin = () => {
         tagList = [];
 
         //pulls a random amt of tags to input
-        const randAmt = getRandomInt(14);
+        const randAmt = getRandomInt(50);
         for (let i = 0; i < randAmt; i++) {
             const randomTag = randomValue(data1.tags, `tagTitle`);
             tagList.push(randomTag);
@@ -43,17 +40,10 @@ const Doujin = () => {
         return tagList;
     }
 
-    const removeDups = (array) => {
-        const newList = array.filter(function(item, pos) {
-            return array.indexOf(item) == pos;
-        })
-
-        setState(newList);
-    }
-
     const makeTagList = () => {
         generateTags();
-        removeDups(tagList);
+        const newList = removeDups(tagList);
+        setState(newList);
     };
 
     if (loading1 === false) {   
