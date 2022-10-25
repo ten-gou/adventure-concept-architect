@@ -3,23 +3,23 @@ import React from 'react';
 import {
     Grid,
     Typography,
-    Stack,
-    Button
+    Card,
 } from '@mui/material';
 
 const TagBox = (props) => {
     if (props !== undefined) {
         return (
             <Grid container
-            spacing={4}>
+            spacing={12}>
                 {props.data.map((item, index) => {
                     return (
                         <Grid item
                         xs={6} sm={4} md={2}
                         align={'center'}
-                        key={index}
-                        className={'tag'}>
-                            <Typography variant='p'>{item.tagTitle}</Typography>
+                        key={index}>
+                            <Card>
+                                <Typography variant='p'>{item.tagTitle}</Typography>
+                            </Card>
                         </Grid>
                     )
                 })}
@@ -28,8 +28,7 @@ const TagBox = (props) => {
     }
     else {
         return (
-            <Stack>
-            </Stack>
+            <Grid container></Grid>
         )
     }
 }
