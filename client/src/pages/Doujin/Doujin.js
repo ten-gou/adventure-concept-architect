@@ -31,20 +31,15 @@ const Doujin = () => {
         tagList = [];
 
         //pulls a random amt of tags to input
-        const randAmt = getRandomInt(50);
+        const randAmt = getRandomInt(12);
         for (let i = 0; i < randAmt; i++) {
             const randomTag = randomValue(data1.tags, `tagTitle`);
             tagList.push(randomTag);
         };
         
-        return tagList;
-    }
-
-    const makeTagList = () => {
-        generateTags();
         const newList = removeDups(tagList);
         setState(newList);
-    };
+    }
 
     if (loading1 === false) {   
         return (
@@ -62,12 +57,14 @@ const Doujin = () => {
                     <Grid item xs={8} align={'center'}>
                         <Stack>
                             <Typography variant='p'>Need to make a doujin and don't know where to start? Click the button below, and let the Prompt Generator create a template idea for you!</Typography>
-                            <Button onClick={() => {makeTagList()}}>Get Started!</Button>
+                            <Button onClick={() => {generateTags()}}>Get Started!</Button>
                         </Stack>
                     </Grid>
                     <Grid item xs={2} />
                 </Grid>
-                <Box><TagBox data={state} /></Box>
+                <Box>
+                    <TagBox data={state} />
+                </Box>
             </Box>
         )
     }

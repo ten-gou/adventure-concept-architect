@@ -15,7 +15,7 @@ export function removeDups(array) {
     let filter = [];
     const newList = array.filter(function(item) {
         const check = filter.includes(item.value);
-        if (check == false) {
+        if (check === false) {
             filter.push(item.value);
         }
         return check !== true;

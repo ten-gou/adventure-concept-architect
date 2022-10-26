@@ -7,25 +7,23 @@ import {
     CardContent,
     CardActionArea,
     Collapse,
-    Slide,
 } from '@mui/material';
 
 const TagBox = (props) => {
     const [checked, setChecked] = React.useState(false);
 
     const handleChange = () => {
-        console.log('hello!')
         setChecked((prev) => !prev);
     };
 
-    if (props !== undefined) {
+    if (props !== undefined && props.data.length !== undefined) {
         return (
             <Grid container
             spacing={12}>
                 {props.data.map((item, index) => {
                     return (
                         <Grid item
-                        xs={6} sm={4} md={2}
+                        xs={4} sm={3} md={2}
                         align={'center'}
                         key={index}
                         >
@@ -46,11 +44,6 @@ const TagBox = (props) => {
                     )
                 })}
             </Grid>
-        )
-    }
-    else {
-        return (
-            <Grid container></Grid>
         )
     }
 }
