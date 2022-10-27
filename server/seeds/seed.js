@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const db = require('../config/connection');
 const { Genre, Mature, Region, Tag } = require('../models');
 
@@ -6,7 +7,17 @@ const matureData = require('./matureData.json');
 const regionData = require('./regionData.json');
 const tagData = require('./tagData.json');
 
-db.once('open', async () => {
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/adventure-concept-architect', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+})
+.then(() => { console.log('Mongo Connection Established')})
+.catch((err) => {console.log(err)});
+
+const seedDB = async () => {
     // cleans the database
     await Genre.deleteMany({});
     await Mature.deleteMany({});
@@ -16,10 +27,14 @@ db.once('open', async () => {
     console.log('all deleted!')
 
     // bulk create and insert data
-    const genre = await Genre.insertMany(genreData);
-    const mature = await Mature.insertMany(matureData);
-    const region = await Region.insertMany(regionData);
-    const tag = await Tag.insertMany(tagData);
+    await Genre.insertMany(genreData);
+    await Mature.insertMany(matureData);
+    await Region.insertMany(regionData);
+    await Tag.insertMany(tagData);
 
     console.log('all inserted!')
+}
+
+seedDB().then(() => {
+    mongoose.connection.close();
 })
